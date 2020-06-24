@@ -1,5 +1,4 @@
-const { admin } = require('./admin');
-const { fs } = require('../util/admin');
+const { admin, fs } = require('./admin');
 
 module.exports = (req, res, next) => {
     let idToken;
@@ -18,7 +17,6 @@ module.exports = (req, res, next) => {
       .verifyIdToken(idToken)
       .then((decodedToken) => {
         req.user = decodedToken;
-        console.log(decodedToken);
         return fs
           .collection('users')
           .where('userId', '==', req.user.uid)
