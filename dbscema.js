@@ -20,6 +20,15 @@ let db = {
       commentCount: 2,
     },
   ],
+  comments: [
+    {
+      userHandle: 'user',
+      userImage: 'image/dsfsdkfghskdfgs/dgfdhfgdh',
+      screamId: 'zl9p9KTcNAMiNtDpssan',
+      body: 'shout out please!',
+      createdAt: '2020-06-23T02:37:38.881Z',
+    },
+  ],
 };
 
 const userDetails = {
