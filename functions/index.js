@@ -45,10 +45,14 @@ exports.createNotificationOnLike = functions
   .region('asia-northeast1')
   .firestore.document('likes/{id}')
   .onCreate((snapshot) => {
-    fs.doc(`/screams/${snapshot.data().screamId}`)
+    return fs
+      .doc(`/screams/${snapshot.data().screamId}`)
       .get()
       .then((doc) => {
-        if (doc.exists) {
+        if (
+          doc.exists &&
+          doc.data().userHandle !== snapshot.data().userHandle
+        ) {
           return fs.doc(`/notifications/${snapshot.id}`).set({
             createdAt: new Date().toISOString(),
             recipient: doc.data().userHandle,
@@ -59,24 +63,16 @@ exports.createNotificationOnLike = functions
           });
         }
       })
-      .then(() => {
-        return;
-      })
-      .catch((err) => {
-        console.error(err);
-        return;
-      });
+      .catch((err) => console.error(err));
   });
 
 exports.deleteNotificationOnUnLike = functions
   .region('asia-northeast1')
   .firestore.document('likes/{id}')
   .onDelete((snapshot) => {
-    fs.doc(`/notifications/${snapshot.id}`)
+    return fs
+      .doc(`/notifications/${snapshot.id}`)
       .delete()
-      .then(() => {
-        return;
-      })
       .catch((err) => {
         console.error(err);
         return;
@@ -87,10 +83,14 @@ exports.createNotificationOnComment = functions
   .region('asia-northeast1')
   .firestore.document('comments/{id}')
   .onCreate((snapshot) => {
-    fs.doc(`/screams/${snapshot.data().screamId}`)
+    return fs
+      .doc(`/screams/${snapshot.data().screamId}`)
       .get()
       .then((doc) => {
-        if (doc.exists) {
+        if (
+          doc.exists &&
+          doc.data().userHandle !== snapshot.data().userHandle
+        ) {
           return fs.doc(`/notifications/${snapshot.id}`).set({
             createdAt: new Date().toISOString(),
             recipient: doc.data().userHandle,
@@ -100,9 +100,6 @@ exports.createNotificationOnComment = functions
             screamId: doc.id,
           });
         }
-      })
-      .then(() => {
-        return;
       })
       .catch((err) => {
         console.error(err);
