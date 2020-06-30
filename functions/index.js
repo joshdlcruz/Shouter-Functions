@@ -39,10 +39,10 @@ app.get('/user', fireAuth, getAuthenticatedUser);
 app.get('/user/:handle', getUserDetails);
 app.post('/notifications', fireAuth, markNotificationsAsRead);
 
-exports.api = functions.region('asia-northeast1').https.onRequest(app);
+exports.api = functions.region('asia-east2').https.onRequest(app);
 
 exports.createNotificationOnLike = functions
-  .region('asia-northeast1')
+  .region('asia-east2')
   .firestore.document('likes/{id}')
   .onCreate((snapshot) => {
     return fs
@@ -67,7 +67,7 @@ exports.createNotificationOnLike = functions
   });
 
 exports.deleteNotificationOnUnLike = functions
-  .region('asia-northeast1')
+  .region('asia-east2')
   .firestore.document('likes/{id}')
   .onDelete((snapshot) => {
     return fs
@@ -80,7 +80,7 @@ exports.deleteNotificationOnUnLike = functions
   });
 
 exports.createNotificationOnComment = functions
-  .region('asia-northeast1')
+  .region('asia-east2')
   .firestore.document('comments/{id}')
   .onCreate((snapshot) => {
     return fs
@@ -108,7 +108,7 @@ exports.createNotificationOnComment = functions
   });
 
 exports.onUserImageChange = functions
-  .region('asia-northeast1')
+  .region('asia-east2')
   .firestore.document('/users/{userId}')
   .onUpdate((change) => {
     console.log(change.before.data());
@@ -131,7 +131,7 @@ exports.onUserImageChange = functions
   });
 
 exports.onScreamDelete = functions
-  .region('asia-northeast1')
+  .region('asia-east2')
   .firestore.document('/screams/{screamId}')
   .onDelete((snapshot, context) => {
     const screamId = context.params.screamId;
